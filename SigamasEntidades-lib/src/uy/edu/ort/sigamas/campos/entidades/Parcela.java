@@ -6,7 +6,6 @@
 package uy.edu.ort.sigamas.campos.entidades;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,12 +17,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import uy.edu.ort.sigamas.seguridad.entidades.Cuenta;
-import uy.edu.ort.sigamas.seguimiento.entidades.Proyecto;
 
 /**
  *
@@ -53,8 +49,6 @@ public class Parcela implements Serializable {
     private String padron;
     @Column(name = "departamento", length = 45)
     private String departamento;
-    @OneToMany(mappedBy = "idParcela", fetch = FetchType.EAGER)
-    private List<Proyecto> proyectoList;
     @JoinColumn(name = "id_cuenta", referencedColumnName = "id_cuenta")
     @ManyToOne(fetch = FetchType.EAGER)
     private Cuenta idCuenta;
@@ -102,15 +96,6 @@ public class Parcela implements Serializable {
 
     public void setDepartamento(String departamento) {
         this.departamento = departamento;
-    }
-
-    @XmlTransient
-    public List<Proyecto> getProyectoList() {
-        return proyectoList;
-    }
-
-    public void setProyectoList(List<Proyecto> proyectoList) {
-        this.proyectoList = proyectoList;
     }
 
     public Cuenta getIdCuenta() {

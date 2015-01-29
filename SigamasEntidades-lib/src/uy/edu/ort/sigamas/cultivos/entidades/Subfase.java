@@ -5,6 +5,7 @@
  */
 package uy.edu.ort.sigamas.cultivos.entidades;
 
+import uy.edu.ort.sigamas.seguimiento.entidades.Proyecto;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -22,8 +23,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import uy.edu.ort.sigamas.seguimiento.entidades.Proyecto;
-import uy.edu.ort.sigamas.seguimiento.entidades.TareaPlanificada;
 
 /**
  *
@@ -38,7 +37,6 @@ import uy.edu.ort.sigamas.seguimiento.entidades.TareaPlanificada;
     @NamedQuery(name = "Subfase.findByEtapa", query = "SELECT s FROM Subfase s WHERE s.etapa = :etapa"),
     @NamedQuery(name = "Subfase.findByNombre", query = "SELECT s FROM Subfase s WHERE s.nombre = :nombre"),
     @NamedQuery(name = "Subfase.findByDias", query = "SELECT s FROM Subfase s WHERE s.dias = :dias"),
-    @NamedQuery(name = "Subfase.findPrimeraFase", query = "SELECT s FROM Subfase s WHERE s.dias = 0 and s.idCultivo = :idCultivo"),
     @NamedQuery(name = "Subfase.findByDescripcion", query = "SELECT s FROM Subfase s WHERE s.descripcion = :descripcion")})
 public class Subfase implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -55,18 +53,16 @@ public class Subfase implements Serializable {
     private Integer dias;
     @Column(name = "descripcion", length = 45)
     private String descripcion;
-    @OneToMany(mappedBy = "idSubfase", fetch = FetchType.EAGER)
-    private List<TareaPlanificada> tareaPlanificadaList;
-    @OneToMany(mappedBy = "idFasePlanificada", fetch = FetchType.EAGER)
-    private List<Proyecto> proyectoList;
-    @OneToMany(mappedBy = "idFaseActual", fetch = FetchType.EAGER)
-    private List<Proyecto> proyectoList1;
     @JoinColumn(name = "id_fase", referencedColumnName = "id_fase")
     @ManyToOne(fetch = FetchType.EAGER)
     private Fase idFase;
     @JoinColumn(name = "id_cultivo", referencedColumnName = "id_cultivo")
     @ManyToOne(fetch = FetchType.EAGER)
     private Cultivo idCultivo;
+    @OneToMany(mappedBy = "idFasePlanificada", fetch = FetchType.EAGER)
+    private List<Proyecto> proyectoList;
+    @OneToMany(mappedBy = "idFaseActual", fetch = FetchType.EAGER)
+    private List<Proyecto> proyectoList1;
 
     public Subfase() {
     }
@@ -115,13 +111,20 @@ public class Subfase implements Serializable {
         this.descripcion = descripcion;
     }
 
-    @XmlTransient
-    public List<TareaPlanificada> getTareaPlanificadaList() {
-        return tareaPlanificadaList;
+    public Fase getIdFase() {
+        return idFase;
     }
 
-    public void setTareaPlanificadaList(List<TareaPlanificada> tareaPlanificadaList) {
-        this.tareaPlanificadaList = tareaPlanificadaList;
+    public void setIdFase(Fase idFase) {
+        this.idFase = idFase;
+    }
+
+    public Cultivo getIdCultivo() {
+        return idCultivo;
+    }
+
+    public void setIdCultivo(Cultivo idCultivo) {
+        this.idCultivo = idCultivo;
     }
 
     @XmlTransient
@@ -140,22 +143,6 @@ public class Subfase implements Serializable {
 
     public void setProyectoList1(List<Proyecto> proyectoList1) {
         this.proyectoList1 = proyectoList1;
-    }
-
-    public Fase getIdFase() {
-        return idFase;
-    }
-
-    public void setIdFase(Fase idFase) {
-        this.idFase = idFase;
-    }
-
-    public Cultivo getIdCultivo() {
-        return idCultivo;
-    }
-
-    public void setIdCultivo(Cultivo idCultivo) {
-        this.idCultivo = idCultivo;
     }
 
     @Override

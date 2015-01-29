@@ -5,12 +5,8 @@
  */
 package uy.edu.ort.sigamas.seguimiento.entidades;
 
-import uy.edu.ort.sigamas.cultivos.entidades.Subfase;
-import uy.edu.ort.sigamas.cultivos.entidades.Cultivo;
-import uy.edu.ort.sigamas.campos.entidades.Parcela;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,13 +18,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import uy.edu.ort.sigamas.seguridad.entidades.Cuenta;
+import uy.edu.ort.sigamas.cultivos.entidades.Cultivo;
+import uy.edu.ort.sigamas.cultivos.entidades.Subfase;
 
 /**
  *
@@ -43,9 +39,6 @@ import uy.edu.ort.sigamas.seguridad.entidades.Cuenta;
     @NamedQuery(name = "Proyecto.findByNombre", query = "SELECT p FROM Proyecto p WHERE p.nombre = :nombre"),
     @NamedQuery(name = "Proyecto.findByFechaInicio", query = "SELECT p FROM Proyecto p WHERE p.fechaInicio = :fechaInicio")})
 public class Proyecto implements Serializable {
-    @JoinColumn(name = "id_cuenta", referencedColumnName = "id_cuenta")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Cuenta idCuenta;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,22 +51,18 @@ public class Proyecto implements Serializable {
     @Column(name = "fecha_inicio")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicio;
-    @OneToMany(mappedBy = "idProyecto", fetch = FetchType.EAGER)
-    private List<TareaPlanificada> tareaPlanificadaList;
     @JoinColumn(name = "id_fase_planificada", referencedColumnName = "id_subfase")
     @ManyToOne(fetch = FetchType.EAGER)
     private Subfase idFasePlanificada;
     @JoinColumn(name = "id_fase_actual", referencedColumnName = "id_subfase")
     @ManyToOne(fetch = FetchType.EAGER)
     private Subfase idFaseActual;
-    @JoinColumn(name = "id_parcela", referencedColumnName = "id_parcela")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Parcela idParcela;
     @JoinColumn(name = "id_cultivo", referencedColumnName = "id_cultivo")
     @ManyToOne(fetch = FetchType.EAGER)
     private Cultivo idCultivo;
-    @OneToMany(mappedBy = "idProyecto", fetch = FetchType.EAGER)
-    private List<TareaReal> tareaRealList;
+    @JoinColumn(name = "id_cuenta", referencedColumnName = "id_cuenta")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Cuenta idCuenta;
 
     public Proyecto() {
     }
@@ -111,15 +100,6 @@ public class Proyecto implements Serializable {
         this.fechaInicio = fechaInicio;
     }
 
-    @XmlTransient
-    public List<TareaPlanificada> getTareaPlanificadaList() {
-        return tareaPlanificadaList;
-    }
-
-    public void setTareaPlanificadaList(List<TareaPlanificada> tareaPlanificadaList) {
-        this.tareaPlanificadaList = tareaPlanificadaList;
-    }
-
     public Subfase getIdFasePlanificada() {
         return idFasePlanificada;
     }
@@ -136,14 +116,6 @@ public class Proyecto implements Serializable {
         this.idFaseActual = idFaseActual;
     }
 
-    public Parcela getIdParcela() {
-        return idParcela;
-    }
-
-    public void setIdParcela(Parcela idParcela) {
-        this.idParcela = idParcela;
-    }
-
     public Cultivo getIdCultivo() {
         return idCultivo;
     }
@@ -152,13 +124,12 @@ public class Proyecto implements Serializable {
         this.idCultivo = idCultivo;
     }
 
-    @XmlTransient
-    public List<TareaReal> getTareaRealList() {
-        return tareaRealList;
+    public Cuenta getIdCuenta() {
+        return idCuenta;
     }
 
-    public void setTareaRealList(List<TareaReal> tareaRealList) {
-        this.tareaRealList = tareaRealList;
+    public void setIdCuenta(Cuenta idCuenta) {
+        this.idCuenta = idCuenta;
     }
 
     @Override
@@ -184,14 +155,6 @@ public class Proyecto implements Serializable {
     @Override
     public String toString() {
         return "uy.edu.ort.sigamas.seguridad.entidades.Proyecto[ idProyecto=" + idProyecto + " ]";
-    }
-
-    public Cuenta getIdCuenta() {
-        return idCuenta;
-    }
-
-    public void setIdCuenta(Cuenta idCuenta) {
-        this.idCuenta = idCuenta;
     }
     
 }

@@ -8,6 +8,9 @@
     <class>uy.edu.ort.sigamas.cultivos.entidades.Cultivo</class>
     <class>uy.edu.ort.sigamas.cultivos.entidades.Fase</class>
     <class>uy.edu.ort.sigamas.cultivos.entidades.Subfase</class>
+    <class>uy.edu.ort.sigamas.insumos.entidades.Insumo</class>
+    <class>uy.edu.ort.sigamas.insumos.entidades.InsumoTarea</class>
+    <class>uy.edu.ort.sigamas.insumos.entidades.Valor</class>
     <class>uy.edu.ort.sigamas.notificaciones.entidades.Notificacion</class>
     <class>uy.edu.ort.sigamas.notificaciones.entidades.TipoNotificacion</class>
     <class>uy.edu.ort.sigamas.seguimiento.entidades.Proyecto</class>

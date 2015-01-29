@@ -14,9 +14,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import uy.edu.ort.sigamas.cultivos.entidades.Cultivo;
 import uy.edu.ort.sigamas.seguimiento.SeguimientoBeanLocal;
-import uy.edu.ort.sigamas.seguimiento.entidades.Proyecto;
 import uy.edu.ort.sigamas.seguimiento.entidades.TareaReal;
 import uy.edu.ort.sigamas.sigamasweb.login.BeanSesionUsuario;
 
@@ -50,7 +48,7 @@ public class beanSeguimiento implements Serializable{
 
     @PostConstruct
     public void init() {
-        List<TareaReal> tareasPendientes = seguimientoBeanLocal.obtenerTareasPendientes(beanSesionUsuario.getCuentaActual());        
+        //List<TareaReal> tareasPendientes = seguimientoBeanLocal.obtenerTareasPendientes(beanSesionUsuario.getCuentaActual());        
                        
         
         /*try {
@@ -68,8 +66,8 @@ public class beanSeguimiento implements Serializable{
  
     public void actualizarTareasProyecto(ValueChangeEvent  event){
         proyectoSeleccionado = (SelectItem)event.getNewValue();
-//        Proyecto proyecto = seguimientoBeanLocal.obtenerProyecto(proyectoSeleccionado.getLabel());
-//        setTareas(seguimientoBeanLocal.obtenerTareas(proyecto));
+//      Proyecto proyecto = seguimientoBeanLocal.obtenerProyecto(proyectoSeleccionado.getLabel());
+//      setTareas(seguimientoBeanLocal.obtenerTareas(proyecto));
     }
 
     /**

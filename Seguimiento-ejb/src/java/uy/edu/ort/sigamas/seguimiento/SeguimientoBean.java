@@ -64,12 +64,11 @@ public class SeguimientoBean implements SeguimientoBeanLocal {
 
     @Override
     public List<TareaReal> obtenerTareasPendientes(Cuenta cuentaActual) {
-        List<Proyecto> proyectos = em.createNamedQuery("Proyecto.findAll").getResultList();
+
+        List<Proyecto> proyectos = cuentaActual.getProyectoList();
         List<TareaReal> tareasPendientes = new ArrayList();
         for (Proyecto proyecto : proyectos) {
-            if (proyecto.getIdCuenta() == cuentaActual) {
-                tareasPendientes.addAll(em.createNamedQuery("TareaReal.findTareasPendientes").setParameter("idProyecto", proyecto.getIdProyecto()).getResultList());
-            }
+            tareasPendientes.addAll(em.createNamedQuery("TareaReal.findTareasPendientes").setParameter("idProyecto", proyecto.getIdProyecto()).getResultList());
         }
         return tareasPendientes;
     }

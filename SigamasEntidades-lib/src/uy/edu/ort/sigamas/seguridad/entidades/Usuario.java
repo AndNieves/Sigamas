@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,7 +20,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -77,13 +75,11 @@ public class Usuario implements Serializable {
     private String sexo;
     @Column(name = "profesion", length = 45)
     private String profesion;
-    @ManyToMany(mappedBy = "usuarioList", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "usuarioList", fetch = FetchType.EAGER)
     private List<Cuenta> cuentaList;
     @JoinColumn(name = "id_rol", referencedColumnName = "id_rol")
     @ManyToOne(fetch = FetchType.EAGER)
     private Rol idRol;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.EAGER)
-    private List<Login> loginList;
 
     public Usuario() {
     }
@@ -195,15 +191,6 @@ public class Usuario implements Serializable {
 
     public void setIdRol(Rol idRol) {
         this.idRol = idRol;
-    }
-
-    @XmlTransient
-    public List<Login> getLoginList() {
-        return loginList;
-    }
-
-    public void setLoginList(List<Login> loginList) {
-        this.loginList = loginList;
     }
 
     @Override
