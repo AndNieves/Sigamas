@@ -14,6 +14,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
+import uy.edu.ort.sigamas.insumos.entidades.Insumo;
 import uy.edu.ort.sigamas.notificaciones.entidades.Notificacion;
 import uy.edu.ort.sigamas.notificaciones.entidades.TipoNotificacion;
 import uy.edu.ort.sigamas.seguimiento.entidades.TareaReal;
@@ -48,6 +49,7 @@ public class BeanNotificacion implements Serializable {
     private List<Notificacion> notificacionesTareas;
     private List<TareaReal> tareasSinNotificacion;
     private List<TipoNotificacion> tiposNotificacion;
+    private List<Insumo> insumos;
 
     /**
      * Creates a new instance of BeanNotificacion
@@ -63,6 +65,7 @@ public class BeanNotificacion implements Serializable {
         if (beanSesionUsuario != null) {
             setTareasSinNotificacion(notificacionBeanLocal.obtenerTareasSinNotificacion(beanSesionUsuario.getCuentaActual()));
         }
+        insumos = notificacionBeanLocal.obtenerInsumos();
     }
 
 // <editor-fold defaultstate="collapsed" desc="Gets y Sets">
@@ -216,6 +219,20 @@ public class BeanNotificacion implements Serializable {
      */
     public void setTareasSinNotificacion(List<TareaReal> tareasSinNotificacion) {
         this.tareasSinNotificacion = tareasSinNotificacion;
+    }
+
+    /**
+     * @return the insumos
+     */
+    public List<Insumo> getInsumos() {
+        return insumos;
+    }
+
+    /**
+     * @param insumos the insumos to set
+     */
+    public void setInsumos(List<Insumo> insumos) {
+        this.insumos = insumos;
     }
 
 }

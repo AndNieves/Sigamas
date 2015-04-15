@@ -15,24 +15,35 @@
                 <p:menuitem value="Administración" outcome="administracion"/>                 
             </p:breadCrumb>
             <p:tabView id="tabViewAdministracion" style="border: none" orientation="left">
-                <p:tab title="Insumos">                        
-                </p:tab>
-                <p:tab title="Campos personalizados">
-                </p:tab>            
+                <p:tab title="Insumos">             
+                    <h2>Insumos</h2>                   
+                    <p:dataTable id="tabla-notificaciones-tarea" 
+                                 var="insumo" 
+                                 value="#{beanNotificacion.insumos}" 
+                                 selectionMode="single"                                     
+                                 rowKey="#{insumo.idInsumo}"
+                                 >                       
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{insumo.codigo}" />
+                        </p:column>
+                        <p:column headerText="Descripción">
+                            <h:outputText value="#{insumo.descripcion}" />
+                        </p:column>
+                        <p:column headerText="Familia">
+                            <h:outputText value="#{insumo.familia}" />
+                        </p:column>                                               
+                    </p:dataTable> 
+                </p:tab>                           
                 <p:tab title="Recetas personalizadas">
                     <h2>Recetas personalizadas</h2>
                     <p:separator style="height: 5px"/>                    
                     <p:dataTable id="tabla-recetas-personalizadas" 
                                  var="receta" 
                                  value="#{beanReceta.listaRecetasPersonalizadas}" 
-                                 selectionMode="single"                                     
-                                
+                                 selectionMode="single"                                                                     
                                  selection="#{beanReceta.recetaSeleccionada}">
                         <p:ajax event="rowSelect" listener="#{beanReceta.seleccionReceta}" update=":form:tabViewAdministracion:detalleReceta"/>
-                        <p:ajax event="rowUnselect" listener="#{beanReceta.deseleccionReceta}" />
-
-                        
-
+                        <p:ajax event="rowUnselect" listener="#{beanReceta.deseleccionReceta}" />                        
                     </p:dataTable>                   
                     <p:dialog widgetVar="dialogRceta" header="Visualización de Receta" modal="true" minHeight="215">
                         <h:panelGrid  id="detalleReceta" columns="2" columnClasses="column" cellpadding="5">

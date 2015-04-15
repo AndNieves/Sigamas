@@ -7,6 +7,7 @@ package uy.edu.ort.sigamas.seguridad.notificacion;
 
 import java.util.List;
 import javax.ejb.Local;
+import uy.edu.ort.sigamas.insumos.entidades.Insumo;
 import uy.edu.ort.sigamas.notificaciones.entidades.Notificacion;
 import uy.edu.ort.sigamas.notificaciones.entidades.TipoNotificacion;
 import uy.edu.ort.sigamas.seguimiento.entidades.TareaReal;
@@ -41,5 +42,6 @@ public interface NotificacionBeanLocal {
     void cambiarAnterioridadNotificacion(Notificacion notificacionSeleccionada, int anterioridad);
 
     void cambiarMensajeNotificacion(Notificacion notificacionSeleccionada, String mensaje);
-
+    
+    List<Insumo> obtenerInsumos();
 }

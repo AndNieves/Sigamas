@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import uy.edu.ort.sigamas.insumos.entidades.Insumo;
 import uy.edu.ort.sigamas.notificaciones.entidades.Notificacion;
 import uy.edu.ort.sigamas.notificaciones.entidades.TipoNotificacion;
 import uy.edu.ort.sigamas.seguimiento.entidades.TareaReal;
@@ -63,5 +64,10 @@ public class NotificacionBean implements NotificacionBeanLocal {
     @Override
     public void cambiarMensajeNotificacion(Notificacion notificacionSeleccionada, String mensaje) {
         UtilNotificacion.cambiarMensajeNotificacion(em, notificacionSeleccionada, mensaje);
+    }
+    
+    @Override
+    public List<Insumo> obtenerInsumos(){
+        return UtilNotificacion.obtenerInsumos(em);
     }
 }

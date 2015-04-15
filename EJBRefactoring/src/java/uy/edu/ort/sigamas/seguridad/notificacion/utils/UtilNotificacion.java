@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import uy.edu.ort.sigamas.insumos.entidades.Insumo;
 import uy.edu.ort.sigamas.notificaciones.entidades.Notificacion;
 import uy.edu.ort.sigamas.notificaciones.entidades.TipoNotificacion;
 import uy.edu.ort.sigamas.seguimiento.entidades.TareaReal;
@@ -74,6 +75,10 @@ public class UtilNotificacion {
         List<TareaReal> tareasSinNotificacion = new ArrayList<>();
 
         return tareasSinNotificacion;
+    }
+
+    public static List<Insumo> obtenerInsumos(EntityManager em) {
+      return em.createNamedQuery("Insumo.findAll").getResultList();
     }
 
 }
