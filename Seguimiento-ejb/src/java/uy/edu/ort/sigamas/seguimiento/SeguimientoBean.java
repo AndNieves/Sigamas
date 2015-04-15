@@ -13,7 +13,8 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import uy.edu.ort.sigamas.cultivos.entidades.Cultivo;
+import javax.persistence.Query;
+import uy.edu.ort.sigamas.cultivos.entidades.CodigueraPlanCultivo;
 import uy.edu.ort.sigamas.cultivos.entidades.Subfase;
 import uy.edu.ort.sigamas.seguimiento.entidades.Proyecto;
 import uy.edu.ort.sigamas.seguimiento.entidades.TareaPlanificada;
@@ -31,15 +32,38 @@ public class SeguimientoBean implements SeguimientoBeanLocal {
     private EntityManager em;
 
     @Override
-    public void nuevoProyecto(Proyecto nuevoProyecto) {
-        if (nuevoProyecto.getIdCultivo() != null) {
-            Subfase subFase = (Subfase) em.createNamedQuery("Subfase.findPrimeraFase")
-                    .setParameter("idCultivo", nuevoProyecto.getIdCultivo().getIdCultivo()).getResultList().get(0);
-            nuevoProyecto.setIdFasePlanificada(subFase);
-            nuevoProyecto.setIdFaseActual(subFase);
-            em.persist(nuevoProyecto);
+    public void nuevoProyecto(Date fechaInicio, CodigueraPlanCultivo planCultivo){
+        //recibe la fecha de inicio y el el registro de la codiguera de planes de cultivo
+        //Debe conseguir las tareas planificadas y pasarlas a tareas reales con fechas previstas        
+        //en este proceso solo se instancian las tareas, dado que alguna de ellas debe iniciar el modelo biologico
+        Proyecto p = new Proyecto();
+        Query queryTareasPlanificadas = em.createNamedQuery("TareaPlanificada.findByCodigoPlanCultivo");
+        queryTareasPlanificadas.setParameter("codigoPlanCultivos", planCultivo.getIdCultivo());
+        List<TareaPlanificada> tareasPlanificadas = (List<TareaPlanificada>) queryTareasPlanificadas.getResultList();
+        List<TareaReal> tareaRealList = new ArrayList<>();
+        for(TareaPlanificada t : tareasPlanificadas){
+            if(t.getIdTareaPredecesora() == null){
+                //ES la primera
+            }
         }
+        
     }
+    
+    /**
+     * Recibe la tarea inicial y una lista con las tareas sin instanciar, devuelve una lista con todas las tareas reales instanciadas
+     * @param tareaActual
+     * @param tareasSinInstanciar
+     * @return 
+     */
+    
+    private List<TareaReal> generarTareasReales(TareaReal tareaAnterior, List<TareaPlanificada> tareasSinInstanciar){
+        for(TareaPlanificada tp : tareasSinInstanciar){
+            if(tareaAnterior.getIdTareaPlanificada().equals(tp.getIdTareaPredecesora()))
+        }
+        
+        return null;
+    }
+       
 
     @Override
     public Proyecto obtenerProyecto(String label) {
@@ -58,7 +82,7 @@ public class SeguimientoBean implements SeguimientoBeanLocal {
     public void pasarProyectoDeFase(Proyecto proyecto) {
         List<Subfase> subfases = em.createNamedQuery("Subfase.findFaseSiguiente").setParameter("idSubfase", proyecto.getIdFaseActual()).getResultList();
         if (!subfases.isEmpty()) {
-            proyecto.setIdFaseActual(subfases.get(0));
+            proyecto.setIdFasePlanificada(subfases.get(0));
         }
     }
 
@@ -74,8 +98,8 @@ public class SeguimientoBean implements SeguimientoBeanLocal {
     }
 
     @Override
-    public void validarTarea(int idTarea) {
-        TareaReal tarea = em.find(TareaReal.class, idTarea);
+    public boolean validarTarea(TareaReal tarea) {
+        System.out.println("Se llama a validar tarea EJB");
         Calendar hoy = Calendar.getInstance();
         hoy.clear(Calendar.HOUR);
         hoy.clear(Calendar.MINUTE);
@@ -87,7 +111,7 @@ public class SeguimientoBean implements SeguimientoBeanLocal {
         //Si la tarea todavia no ha sido validada y su fecha es anterior o igual a la fecha de hoy
         if (tarea.getValidada() == 0 && fechaActual.compareTo(tarea.getFecha()) >= 0) {
             sePuedeValidar = true;
-
+            System.out.println("Por la fecha se puede validar");
             TareaPlanificada tareaPlanificadaPredecesora = em.find(TareaPlanificada.class, tareaPlanificada.getIdTareaPredecesora());
             List<TareaReal> tareasPredecesoras = tareaPlanificadaPredecesora.getTareaRealList();
             //Si hay tareas predecesoras
@@ -96,6 +120,7 @@ public class SeguimientoBean implements SeguimientoBeanLocal {
                     //Si la tarea predecesora no ha sido validada no se puede validar la tarea sucesora
                     if (tareasPredecesora.getValidada() == 0) {
                         sePuedeValidar = false;
+                        System.out.println("Por las antecesoras no se puede validar");
                         break;
                     }
                 }
@@ -103,14 +128,17 @@ public class SeguimientoBean implements SeguimientoBeanLocal {
         }
         if (sePuedeValidar) {
             tarea.setValidada(1);
-            long dif = tarea.getFecha().getTime() - tarea.getFechaPlanificada().getTime();
+            long dif = tarea.getFecha().getTime() - tarea.getFecha().getTime();
             long diferenciaFechas = dif / (24 * 60 * 60 * 1000);
             //Si las fechas son distintas
             if (diferenciaFechas != 0) {
                 int diasDeDiferencia = new BigDecimal(diferenciaFechas).intValueExact();
                 recalcularTareasSucesoras(tarea, tareaPlanificada, fechaActual, diasDeDiferencia);
             }
+            System.out.println("Se puede validar, se llama al merge");
+            em.merge(tarea);
         }
+        return sePuedeValidar;
     }
 
     @Override
@@ -138,4 +166,13 @@ public class SeguimientoBean implements SeguimientoBeanLocal {
     public List<Proyecto> obtenerProyectosConTareasPendientes(Cuenta cuentaActual) {
         return cuentaActual.getProyectoList();
     }
+
+    @Override
+    public Boolean guardarObjeto(Object object) {
+        em.merge(object);
+        em.flush();
+        return Boolean.TRUE;
+    }
+    
+    
 }

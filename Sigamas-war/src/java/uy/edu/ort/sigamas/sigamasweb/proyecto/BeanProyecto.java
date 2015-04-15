@@ -18,7 +18,7 @@ import javax.faces.model.SelectItem;
 import uy.edu.ort.sigamas.seguimiento.SeguimientoBeanLocal;
 import uy.edu.ort.sigamas.seguridad.cultivo.CultivoBeanLocal;
 import uy.edu.ort.sigamas.cultivos.entidades.Cultivo;
-//import uy.edu.ort.sigamas.seguridad.entidades.Cultivo;
+
 import uy.edu.ort.sigamas.campos.entidades.Parcela;
 import uy.edu.ort.sigamas.seguimiento.entidades.Proyecto;
 import uy.edu.ort.sigamas.seguridad.parcela.ParcelaBeanLocal;

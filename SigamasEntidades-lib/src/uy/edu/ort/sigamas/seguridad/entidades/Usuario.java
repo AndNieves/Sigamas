@@ -9,17 +9,17 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Mattahari
  */
 @Entity
-@Table(name = "usuario", catalog = "sigamas_sigamas", schema = "")
+@Table(name = "usuario")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
@@ -44,42 +44,46 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono"),
     @NamedQuery(name = "Usuario.findByFechaNacimiento", query = "SELECT u FROM Usuario u WHERE u.fechaNacimiento = :fechaNacimiento"),
     @NamedQuery(name = "Usuario.findBySexo", query = "SELECT u FROM Usuario u WHERE u.sexo = :sexo"),
-    @NamedQuery(name = "Usuario.findByProfesion", query = "SELECT u FROM Usuario u WHERE u.profesion = :profesion")})
+    @NamedQuery(name = "Usuario.findByProfesion", query = "SELECT u FROM Usuario u WHERE u.profesion = :profesion"),
+    @NamedQuery(name = "Usuario.findByIdRol", query = "SELECT u FROM Usuario u WHERE u.idRol = :idRol")})
 public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_usuario", nullable = false)
+    @Column(name = "id_usuario")
     private Integer idUsuario;
     @Basic(optional = false)
-    @Column(name = "nombre_usuario", nullable = false, length = 45)
+    @Column(name = "nombre_usuario")
     private String nombreUsuario;
     @Basic(optional = false)
-    @Column(name = "clave_usuario", nullable = false, length = 45)
+    @Column(name = "clave_usuario")
     private String claveUsuario;
-    @Column(name = "email_usuario", length = 45)
+    @Column(name = "email_usuario")
     private String emailUsuario;
     @Basic(optional = false)
-    @Column(name = "nombre", nullable = false, length = 45)
+    @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
-    @Column(name = "apellidos", nullable = false, length = 45)
+    @Column(name = "apellidos")
     private String apellidos;
-    @Column(name = "telefono", length = 45)
+    @Column(name = "telefono")
     private String telefono;
     @Column(name = "fecha_nacimiento")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaNacimiento;
-    @Column(name = "sexo", length = 1)
+    @Column(name = "sexo")
     private String sexo;
-    @Column(name = "profesion", length = 45)
+    @Column(name = "profesion")
     private String profesion;
+    @Column(name = "id_rol")
+    private Integer idRol;
     @ManyToMany(mappedBy = "usuarioList", fetch = FetchType.EAGER)
     private List<Cuenta> cuentaList;
-    @JoinColumn(name = "id_rol", referencedColumnName = "id_rol")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Rol idRol;
+    @OneToMany(mappedBy = "idUsuario", fetch = FetchType.EAGER)
+    private List<RelUsuarioCuentaRol> relUsuarioCuentaRolList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.EAGER)
+    private List<Login> loginList;
 
     public Usuario() {
     }
@@ -176,6 +180,14 @@ public class Usuario implements Serializable {
         this.profesion = profesion;
     }
 
+    public Integer getIdRol() {
+        return idRol;
+    }
+
+    public void setIdRol(Integer idRol) {
+        this.idRol = idRol;
+    }
+
     @XmlTransient
     public List<Cuenta> getCuentaList() {
         return cuentaList;
@@ -185,12 +197,22 @@ public class Usuario implements Serializable {
         this.cuentaList = cuentaList;
     }
 
-    public Rol getIdRol() {
-        return idRol;
+    @XmlTransient
+    public List<RelUsuarioCuentaRol> getRelUsuarioCuentaRolList() {
+        return relUsuarioCuentaRolList;
     }
 
-    public void setIdRol(Rol idRol) {
-        this.idRol = idRol;
+    public void setRelUsuarioCuentaRolList(List<RelUsuarioCuentaRol> relUsuarioCuentaRolList) {
+        this.relUsuarioCuentaRolList = relUsuarioCuentaRolList;
+    }
+
+    @XmlTransient
+    public List<Login> getLoginList() {
+        return loginList;
+    }
+
+    public void setLoginList(List<Login> loginList) {
+        this.loginList = loginList;
     }
 
     @Override

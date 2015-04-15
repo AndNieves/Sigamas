@@ -20,6 +20,12 @@
     <class>uy.edu.ort.sigamas.seguridad.entidades.Login</class>
     <class>uy.edu.ort.sigamas.seguridad.entidades.Rol</class>
     <class>uy.edu.ort.sigamas.seguridad.entidades.Usuario</class>
+    <class>uy.edu.ort.sigamas.seguridad.entidades.InvitacionCuenta</class>
+    <class>uy.edu.ort.sigamas.seguridad.entidades.RelUsuarioCuentaRol</class>
+    <class>uy.edu.ort.sigamas.seguridad.entidades.Permiso</class>
+    <class>uy.edu.ort.sigamas.seguridad.entidades.RelRolPermiso</class>
+    <class>uy.edu.ort.sigamas.seguimiento.entidades.SubfaseActual</class>
+    <class>uy.edu.ort.sigamas.cultivos.entidades.CodigueraPlanCultivo</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sigamas_sigamas?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

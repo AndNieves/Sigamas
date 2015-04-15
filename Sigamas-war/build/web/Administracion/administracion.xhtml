@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../Templates/topHeaderTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <ui:define name="content">
+        <h:form id="form">             
+            <p:breadCrumb id="mainBreadCrumb">
+                <p:menuitem value="Home" outcome="homeClient"/>                 
+                <p:menuitem value="Administración" outcome="administracion"/>                 
+            </p:breadCrumb>
+            <p:tabView id="tabViewAdministracion" style="border: none" orientation="left">
+                <p:tab title="Insumos">                        
+                </p:tab>
+                <p:tab title="Campos personalizados">
+                </p:tab>            
+                <p:tab title="Recetas personalizadas">
+                    <h2>Recetas personalizadas</h2>
+                    <p:separator style="height: 5px"/>                    
+                    <p:dataTable id="tabla-recetas-personalizadas" 
+                                 var="receta" 
+                                 value="#{beanReceta.listaRecetasPersonalizadas}" 
+                                 selectionMode="single"                                     
+                                
+                                 selection="#{beanReceta.recetaSeleccionada}">
+                        <p:ajax event="rowSelect" listener="#{beanReceta.seleccionReceta}" update=":form:tabViewAdministracion:detalleReceta"/>
+                        <p:ajax event="rowUnselect" listener="#{beanReceta.deseleccionReceta}" />
+
+                        
+
+                    </p:dataTable>                   
+                    <p:dialog widgetVar="dialogRceta" header="Visualización de Receta" modal="true" minHeight="215">
+                        <h:panelGrid  id="detalleReceta" columns="2" columnClasses="column" cellpadding="5">
+                            
+                        </h:panelGrid>
+                    </p:dialog> 
+                </p:tab>
+                <p:tab title="Alertas y Notificaciones">
+                    <h2>Alertas y Notificaciones</h2>
+                    <p:separator style="height: 5px"/>
+                    <h3>CRONOGRAMA - Tareas</h3>
+                    <p:dataTable id="tabla-notificaciones-tarea" 
+                                 var="notificacion" 
+                                 value="#{beanNotificacion.notificacionesTareas}" 
+                                 selectionMode="single"                                     
+                                 rowKey="#{notificacion.idNotificacion}"
+                                 selection="#{beanNotificacion.notificacionSeleccionada}">
+                        <p:ajax event="rowSelect" listener="#{beanNotificacion.seleccionNotificacion}" update=":form:tabViewAdministracion:detalleNotificacion"/>
+                        <p:ajax event="rowUnselect" listener="#{beanNotificacion.deseleccionNotificacion}" />
+                        <p:column headerText="Tipo de notificacion">
+                            <h:outputText value="#{notificacion.idTipoNotificacion.nombre}" />
+                        </p:column>
+                        <p:column headerText="Mensaje">
+                            <h:outputText value="#{notificacion.mensaje}" />
+                        </p:column>
+                        <p:column headerText="Cuando">
+                            <h:outputText value="#{notificacion.anterioridadDias} días antes del evento" />
+                        </p:column>
+                        <p:column headerText="Eliminar"></p:column>
+
+                    </p:dataTable> 
+                    <!-- Acá irá una tabla con las tareas que no tienen una notificación asignada -->
+                                        
+                    <p:dialog widgetVar="dialogNotificacion" header="Visualización Notificación" modal="true" minHeight="215">
+                        <h:panelGrid  id="detalleNotificacion" columns="2" columnClasses="column" cellpadding="5">
+                            <h:outputLabel for="tipoNotificacion" value="Tipo de notificación:" />
+                            <p:selectOneMenu id="tipoNotificacion" value="#{beanNotificacion.notificacionSeleccionada.idTipoNotificacion.idTipoNotificacion}" rendered="#{not empty beanNotificacion.notificacionSeleccionada.idTipoNotificacion}">                               
+                                <f:selectItems value="#{beanNotificacion.tiposNotificacion}" 
+                                               var="tipoN"                                            
+                                               itemLabel="#{tipoN.nombre}" 
+                                               itemValue="#{tipoN.idTipoNotificacion}" />
+                            </p:selectOneMenu>
+
+                            <h:outputLabel for="detalleMensaje" value="Mensaje: "/>
+                            <p:inputText value="#{beanNotificacion.notificacionSeleccionada.mensaje}" rendered="#{not empty beanNotificacion.notificacionSeleccionada}"/>
+
+                            <h:outputLabel for="anterioridadDias" value="Anterioridad"/>
+                            <p:selectOneMenu value="#{beanNotificacion.notificacionSeleccionada.anterioridadDias}" rendered="#{not empty beanNotificacion.notificacionSeleccionada}">        
+                                <f:selectItem itemLabel="El día del evento" itemValue="0"/>
+                                <f:selectItem itemLabel="5 días antes del evento" itemValue="5"/>
+                                <f:selectItem itemLabel="10 días antes del evento" itemValue="10"/>
+                                <f:selectItem itemLabel="15 días antes del evento" itemValue="15"/>
+                            </p:selectOneMenu>
+                            <p:commandButton value="Guardar" action="#{beanNotificacion.modificarNotificacion}" update="tabla-notificaciones-tarea"/>
+                        </h:panelGrid>
+                    </p:dialog> 
+                </p:tab>
+            </p:tabView>           
+        </h:form>
+    </ui:define>
+</ui:composition>

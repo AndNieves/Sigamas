@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Mattahari
  */
 @Entity
-@Table(name = "login", catalog = "sigamas_sigamas", schema = "")
+@Table(name = "login")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Login.findAll", query = "SELECT l FROM Login l"),
@@ -40,15 +40,15 @@ public class Login implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_login", nullable = false)
+    @Column(name = "id_login")
     private Integer idLogin;
     @Basic(optional = false)
-    @Column(name = "fecha", nullable = false)
+    @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
-    @Column(name = "ip", length = 45)
+    @Column(name = "ip")
     private String ip;
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Usuario idUsuario;
     @JoinColumn(name = "id_cuenta", referencedColumnName = "id_cuenta")

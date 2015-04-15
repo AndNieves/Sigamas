@@ -26,38 +26,44 @@
                 <p:layoutUnit position="west" resizable="true" size="80%">
                     <p:tabView style="border: none" activeIndex="#{beanSesionUsuario.tabSelected}">
                         <p:tab title="Página principal">                       
-                            <!--<h:panelGrid columns="2" cellpadding="10">-->
                             <div style="height:500px">
-                                <h:form>
-                                    <p:growl id="msg" />
-                                    <h:outputLabel></h:outputLabel>
+                                    <p:growl id="msg" />                                    
 
                                     <p:panel style="width:400px;height:400px; display: inline" id="drag-tareas" header="Información sobre sus tareas">
-                                        <p:dataTable var="proyecto" value="#{beanSesionUsuario.proyectosConTareasPendientes}" emptyMessage="Usted no tiene tareas pendientes">
+                                        <p:dataTable var="item" 
+                                                     value="#{beanTareasPendientes.tareasPendientesList}" 
+                                                     emptyMessage="Usted no tiene tareas pendientes"
+                                                     >
                                             <f:facet name="header">
                                                 Proyectos con tareas pendientes
-                                            </f:facet>                                            
+                                            </f:facet>  
+                                            <p:column width="50px;" headerText="Ver">
+                                                <p:commandButton value="Ver" action="verProyecto">
+                                                    <f:setPropertyActionListener value="#{item.idProyecto}" target="#{beanSesionUsuario.proyectoSeleccionado}"/>
+                                                </p:commandButton>                                                    
+                                            </p:column>
+                                            <p:column headerText="Proyecto">
+                                                <h:outputText value="#{item.idProyecto.nombre}" />
+                                            </p:column> 
+                                            <p:column headerText="Tarea">
+                                                <h:outputText value="#{item.nombre}" />
+                                            </p:column>                                                                                                
+                                            <p:column headerText="Fecha Planificada">
+                                                <p:calendar value="#{item.fecha}" readonly="true" readonlyInput="true"/>
+                                            </p:column>  
+                                            <p:column headerText="Cultivo">
+                                                Aca va el cultivo
+                                            </p:column>  
+                                            <p:column headerText="Fase">
+                                                Aca va la fase
+                                            </p:column>  
 
-                                            <p:subTable var="tareaReal" value="#{proyecto.tareaRealList}">
-                                                <f:facet name="header">
-                                                    <h:outputText value="#{proyecto.nombre}" />
-                                                </f:facet>
-                                                <c:if test="#{tareaReal.validada eq 0}">
-                                                    <p:column>
-                                                        <h:outputText value="#{tareaReal.nombre}" />
-                                                    </p:column>                                                                                                
-                                                    <p:column>
-                                                        <h:outputText value="#{tareaReal.fecha}" />
-                                                    </p:column>     
-                                                </c:if>
-                                            </p:subTable>
                                         </p:dataTable>
                                     </p:panel>
                                     <p:panel style="width:400px;height:400px;display: inline" id="drag-chart" header="Evolución de costos">
-                                      <!--  <p:chart type="line" model="#{beanSesionUsuario.lineModel1}" style="height:300px;"/>-->
+                                      <!--<p:chart type="line" model="#{beanGestorNotificaciones.lineModel1}" style="height:300px;"/>-->
                                     </p:panel>
 
-                                </h:form>  
                             </div>                            
                         </p:tab>
                         <p:tab title="Mis parcelas">
@@ -78,11 +84,10 @@
                         </p:tab>
                         <p:tab title="Cronograma">
 
-                            <p:schedule id="schedule" value="#{beanSesionUsuario.eventModel}" widgetVar="myschedule" timeZone="GMT+2">
-
-                                <p:ajax event="eventResize" listener="#{beanSesionUsuario.onEventSelect}"/>
-
+                            <p:schedule id="schedule" value="#{beanCalendarioTareas.eventModel}" widgetVar="myschedule" timeZone="GMT+2">
+                                <!--<p:ajax event="eventResize" listener="#{beanGestorNotificaciones.onEventSelect}"/>-->
                             </p:schedule>
+                            
                         </p:tab>
                         <p:tab title="Mis tareas">
                             <p:panel header="Filtros">

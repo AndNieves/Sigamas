@@ -5,8 +5,6 @@
  */
 package uy.edu.ort.sigamas.seguimiento.entidades;
 
-import uy.edu.ort.sigamas.insumos.entidades.InsumoTarea;
-import uy.edu.ort.sigamas.cultivos.entidades.Subfase;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -24,38 +22,40 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import uy.edu.ort.sigamas.cultivos.entidades.Subfase;
 
 /**
  *
  * @author Mattahari
  */
 @Entity
-@Table(name = "tarea_planificada", catalog = "sigamas_sigamas", schema = "")
+@Table(name = "tarea_planificada")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TareaPlanificada.findAll", query = "SELECT t FROM TareaPlanificada t"),
     @NamedQuery(name = "TareaPlanificada.findByIdTareaPlanificada", query = "SELECT t FROM TareaPlanificada t WHERE t.idTareaPlanificada = :idTareaPlanificada"),
     @NamedQuery(name = "TareaPlanificada.findByNombre", query = "SELECT t FROM TareaPlanificada t WHERE t.nombre = :nombre"),
     @NamedQuery(name = "TareaPlanificada.findByDias", query = "SELECT t FROM TareaPlanificada t WHERE t.dias = :dias"),
-    @NamedQuery(name = "TareaPlanificada.findByValidada", query = "SELECT t FROM TareaPlanificada t WHERE t.validada = :validada"),
-    @NamedQuery(name = "TareaPlanificada.findByDuracionDias", query = "SELECT t FROM TareaPlanificada t WHERE t.duracionDias = :duracionDias")})
+    @NamedQuery(name = "TareaPlanificada.findByDuracionDias", query = "SELECT t FROM TareaPlanificada t WHERE t.duracionDias = :duracionDias"),
+    @NamedQuery(name = "TareaPlanificada.findByCodigoPlanCultivo", query = "SELECT t FROM TareaPlanificada t WHERE t.codigoPlanCultivo = :codigoPlanCultivo"),
+    @NamedQuery(name = "TareaPlanificada.findByGeneradaPorFasebio", query = "SELECT t FROM TareaPlanificada t WHERE t.generadaPorFasebio = :generadaPorFasebio")})
 public class TareaPlanificada implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_tarea_planificada", nullable = false)
+    @Column(name = "id_tarea_planificada")
     private Integer idTareaPlanificada;
-    @Column(name = "nombre", length = 45)
+    @Column(name = "nombre")
     private String nombre;
     @Column(name = "dias")
     private Integer dias;
-    @Column(name = "validada")
-    private Integer validada;
     @Column(name = "duracion_dias")
     private Integer duracionDias;
-    @OneToMany(mappedBy = "idTareaPlanificada", fetch = FetchType.EAGER)
-    private List<InsumoTarea> insumoTareaList;
+    @Column(name = "codigo_plan_cultivo")
+    private Integer codigoPlanCultivo;
+    @Column(name = "generada_por_fasebio")
+    private Integer generadaPorFasebio;
     @OneToMany(mappedBy = "idTareaPredecesora", fetch = FetchType.EAGER)
     private List<TareaPlanificada> tareaPlanificadaList;
     @JoinColumn(name = "id_tarea_predecesora", referencedColumnName = "id_tarea_planificada")
@@ -64,11 +64,6 @@ public class TareaPlanificada implements Serializable {
     @JoinColumn(name = "id_subfase", referencedColumnName = "id_subfase")
     @ManyToOne(fetch = FetchType.EAGER)
     private Subfase idSubfase;
-    @JoinColumn(name = "id_proyecto", referencedColumnName = "id_proyecto")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Proyecto idProyecto;
-    @OneToMany(mappedBy = "idTareaPlanificada", fetch = FetchType.EAGER)
-    private List<TareaReal> tareaRealList;
 
     public TareaPlanificada() {
     }
@@ -101,14 +96,6 @@ public class TareaPlanificada implements Serializable {
         this.dias = dias;
     }
 
-    public Integer getValidada() {
-        return validada;
-    }
-
-    public void setValidada(Integer validada) {
-        this.validada = validada;
-    }
-
     public Integer getDuracionDias() {
         return duracionDias;
     }
@@ -117,13 +104,20 @@ public class TareaPlanificada implements Serializable {
         this.duracionDias = duracionDias;
     }
 
-    @XmlTransient
-    public List<InsumoTarea> getInsumoTareaList() {
-        return insumoTareaList;
+    public Integer getCodigoPlanCultivo() {
+        return codigoPlanCultivo;
     }
 
-    public void setInsumoTareaList(List<InsumoTarea> insumoTareaList) {
-        this.insumoTareaList = insumoTareaList;
+    public void setCodigoPlanCultivo(Integer codigoPlanCultivo) {
+        this.codigoPlanCultivo = codigoPlanCultivo;
+    }
+
+    public Integer getGeneradaPorFasebio() {
+        return generadaPorFasebio;
+    }
+
+    public void setGeneradaPorFasebio(Integer generadaPorFasebio) {
+        this.generadaPorFasebio = generadaPorFasebio;
     }
 
     @XmlTransient
@@ -151,23 +145,6 @@ public class TareaPlanificada implements Serializable {
         this.idSubfase = idSubfase;
     }
 
-    public Proyecto getIdProyecto() {
-        return idProyecto;
-    }
-
-    public void setIdProyecto(Proyecto idProyecto) {
-        this.idProyecto = idProyecto;
-    }
-
-    @XmlTransient
-    public List<TareaReal> getTareaRealList() {
-        return tareaRealList;
-    }
-
-    public void setTareaRealList(List<TareaReal> tareaRealList) {
-        this.tareaRealList = tareaRealList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -190,7 +167,7 @@ public class TareaPlanificada implements Serializable {
 
     @Override
     public String toString() {
-        return "uy.edu.ort.sigamas.seguridad.entidades.TareaPlanificada[ idTareaPlanificada=" + idTareaPlanificada + " ]";
+        return "uy.edu.ort.sigamas.seguimiento.entidades.TareaPlanificada[ idTareaPlanificada=" + idTareaPlanificada + " ]";
     }
     
 }

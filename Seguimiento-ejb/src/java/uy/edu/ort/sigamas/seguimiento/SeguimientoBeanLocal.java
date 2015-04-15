@@ -8,7 +8,7 @@ package uy.edu.ort.sigamas.seguimiento;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
-import uy.edu.ort.sigamas.cultivos.entidades.Cultivo;
+import uy.edu.ort.sigamas.cultivos.entidades.CodigueraPlanCultivo;
 import uy.edu.ort.sigamas.seguimiento.entidades.Proyecto;
 import uy.edu.ort.sigamas.seguimiento.entidades.TareaPlanificada;
 import uy.edu.ort.sigamas.seguimiento.entidades.TareaReal;
@@ -22,10 +22,11 @@ import uy.edu.ort.sigamas.seguridad.entidades.Cuenta;
 public interface SeguimientoBeanLocal {
 
     /**
-     * @param nuevoProyecto Permite la creacion de un nuevo proyecto y guardarlo
-     * en la bd
+     * 
+     * @param fechaInicio
+     * @param id_plan_cultivo 
      */
-    void nuevoProyecto(Proyecto nuevoProyecto);
+    void nuevoProyecto(Date fechaInicio, CodigueraPlanCultivo planCultivo);
 
     /**
      * @param label Permite obtener el objeto Proyecto a partir de su
@@ -51,9 +52,13 @@ public interface SeguimientoBeanLocal {
 
     List<TareaReal> obtenerTareasPendientes(Cuenta cuentaActual);    
     
-    void validarTarea(int idTarea);
+    boolean validarTarea(TareaReal tarea);
     
     void recalcularTareasSucesoras(TareaReal tarea, TareaPlanificada tareaPlanificada, Date fechaActual, int diasDeDiferencia);
 
     List<Proyecto> obtenerProyectosConTareasPendientes(Cuenta cuentaActual);
+
+    Boolean guardarObjeto(Object object);
+    
+    
 }

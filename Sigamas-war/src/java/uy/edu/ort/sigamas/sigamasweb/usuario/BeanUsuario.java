@@ -60,6 +60,7 @@ public class BeanUsuario implements Serializable {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
     /**
      * @return the nuevaContraseña
      */
@@ -89,8 +90,6 @@ public class BeanUsuario implements Serializable {
     }
 
    // </editor-fold>
-
-
     public boolean crearUsuario() {
         try {
             Usuario nuevoUsuario = usuarioSessionBean.crearUsuario(usuario, null);
@@ -120,17 +119,17 @@ public class BeanUsuario implements Serializable {
 
     public String modificarUsuario() {
         beanSesionUsuario.setUsuarioLoggeado(usuarioSessionBean.modificarUsuario(beanSesionUsuario.getUsuarioLoggeado()));
-        UtilsMensajes.mostrarMensajeInformacion("messages1","Éxito", "¡Perfil actualizado con éxito!");
+        UtilsMensajes.mostrarMensajeInformacion("messages1", "Éxito", "¡Perfil actualizado con éxito!");
         return "";
     }
 
     public String cambiarContraseña() {
         try {
             usuarioSessionBean.cambiarContraseña(beanSesionUsuario.getUsuarioLoggeado(), viejaContraseña, nuevaContraseña);
-             UtilsMensajes.mostrarMensajeInformacion("messages2","Éxito", "¡Contraseña actualizada con éxito!");
+            UtilsMensajes.mostrarMensajeInformacion("messages2", "Éxito", "¡Contraseña actualizada con éxito!");
             return "";
         } catch (ViejaContraseñaIncorrectaException exp) {
-            UtilsMensajes.mostrarMensajeError("messages2","Error", "La contraseña actual no es correcta");
+            UtilsMensajes.mostrarMensajeError("messages2", "Error", "La contraseña actual no es correcta");
             return "";
         }
     }

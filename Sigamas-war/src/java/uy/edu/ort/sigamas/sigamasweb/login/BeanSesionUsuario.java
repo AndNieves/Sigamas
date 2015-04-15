@@ -9,6 +9,7 @@ import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import uy.edu.ort.sigamas.seguimiento.entidades.Proyecto;
 import uy.edu.ort.sigamas.seguridad.entidades.Cuenta;
 import uy.edu.ort.sigamas.seguridad.entidades.Usuario;
 
@@ -29,6 +30,7 @@ public class BeanSesionUsuario implements Serializable {
     private Usuario usuarioLoggeado;
     private Cuenta cuentaActual;
     private int tabSelected;
+    private Proyecto proyectoSeleccionado;
 
 // <editor-fold defaultstate="collapsed" desc="Gets y Sets">
     public Usuario getUsuarioLoggeado() {
@@ -74,6 +76,16 @@ public class BeanSesionUsuario implements Serializable {
     public void setTabSelected(int tabSelected) {
         this.tabSelected = tabSelected;
     }
-// </editor-fold>
+    
+    
 
+
+    public Proyecto getProyectoSeleccionado() {
+        return proyectoSeleccionado;
+    }
+
+    public void setProyectoSeleccionado(Proyecto proyectoSeleccionado) {
+        this.proyectoSeleccionado = proyectoSeleccionado;
+    }
+// </editor-fold>
 }

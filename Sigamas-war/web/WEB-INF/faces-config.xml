@@ -19,14 +19,18 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-
+            <from-outcome>verProyecto</from-outcome>
+            <to-view-id>/Proyecto/verProyecto.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>crearParcela</from-outcome>
             <to-view-id>/Parcela/crearParcela.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>usuariosCuenta</from-outcome>
-            <to-view-id>/Usuario/usuariosCuenta.xhtml</to-view-id>
+            <from-outcome>gestionCuenta</from-outcome>
+            <to-view-id>/Usuario/gestionCuenta.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>   
@@ -55,7 +59,7 @@
         <from-view-id>/Home/homeClient.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>usuariosCuenta</from-outcome>
-            <to-view-id>/Usuario/usuariosCuenta.xhtml</to-view-id>
+            <to-view-id>/Usuario/gestionCuenta.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
 

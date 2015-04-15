@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Mattahari
  */
 @Entity
-@Table(name = "fase", catalog = "sigamas_sigamas", schema = "")
+@Table(name = "fase")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Fase.findAll", query = "SELECT f FROM Fase f"),
@@ -38,12 +38,12 @@ public class Fase implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_fase", nullable = false)
+    @Column(name = "id_fase")
     private Integer idFase;
     @Basic(optional = false)
-    @Column(name = "nombre_corto", nullable = false, length = 1)
+    @Column(name = "nombre_corto")
     private String nombreCorto;
-    @Column(name = "nombre", length = 45)
+    @Column(name = "nombre")
     private String nombre;
     @OneToMany(mappedBy = "idFase", fetch = FetchType.EAGER)
     private List<Subfase> subfaseList;
@@ -115,7 +115,7 @@ public class Fase implements Serializable {
 
     @Override
     public String toString() {
-        return "uy.edu.ort.sigamas.seguridad.entidades.Fase[ idFase=" + idFase + " ]";
+        return "uy.edu.ort.sigamas.cultivos.entidades.Fase[ idFase=" + idFase + " ]";
     }
     
 }

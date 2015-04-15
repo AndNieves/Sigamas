@@ -7,6 +7,7 @@ package uy.edu.ort.sigamas.seguimiento.entidades;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,20 +19,22 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import uy.edu.ort.sigamas.seguridad.entidades.Cuenta;
+import javax.xml.bind.annotation.XmlTransient;
 import uy.edu.ort.sigamas.cultivos.entidades.Cultivo;
 import uy.edu.ort.sigamas.cultivos.entidades.Subfase;
+import uy.edu.ort.sigamas.seguridad.entidades.Cuenta;
 
 /**
  *
  * @author Mattahari
  */
 @Entity
-@Table(name = "proyecto", catalog = "sigamas_sigamas", schema = "")
+@Table(name = "proyecto")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Proyecto.findAll", query = "SELECT p FROM Proyecto p"),
@@ -39,14 +42,19 @@ import uy.edu.ort.sigamas.cultivos.entidades.Subfase;
     @NamedQuery(name = "Proyecto.findByNombre", query = "SELECT p FROM Proyecto p WHERE p.nombre = :nombre"),
     @NamedQuery(name = "Proyecto.findByFechaInicio", query = "SELECT p FROM Proyecto p WHERE p.fechaInicio = :fechaInicio")})
 public class Proyecto implements Serializable {
+    @Column(name = "fecha_fin_prevista")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaFinPrevista;
+    @OneToMany(mappedBy = "idProyecto", fetch = FetchType.EAGER)
+    private List<TareaReal> tareaRealList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_proyecto", nullable = false)
+    @Column(name = "id_proyecto")
     private Integer idProyecto;
     @Basic(optional = false)
-    @Column(name = "nombre", nullable = false, length = 45)
+    @Column(name = "nombre")
     private String nombre;
     @Column(name = "fecha_inicio")
     @Temporal(TemporalType.TIMESTAMP)
@@ -54,9 +62,9 @@ public class Proyecto implements Serializable {
     @JoinColumn(name = "id_fase_planificada", referencedColumnName = "id_subfase")
     @ManyToOne(fetch = FetchType.EAGER)
     private Subfase idFasePlanificada;
-    @JoinColumn(name = "id_fase_actual", referencedColumnName = "id_subfase")
+    @JoinColumn(name = "id_fase_actual", referencedColumnName = "idsubfase_actual")
     @ManyToOne(fetch = FetchType.EAGER)
-    private Subfase idFaseActual;
+    private SubfaseActual idFaseActual;
     @JoinColumn(name = "id_cultivo", referencedColumnName = "id_cultivo")
     @ManyToOne(fetch = FetchType.EAGER)
     private Cultivo idCultivo;
@@ -108,11 +116,11 @@ public class Proyecto implements Serializable {
         this.idFasePlanificada = idFasePlanificada;
     }
 
-    public Subfase getIdFaseActual() {
+    public SubfaseActual getIdFaseActual() {
         return idFaseActual;
     }
 
-    public void setIdFaseActual(Subfase idFaseActual) {
+    public void setIdFaseActual(SubfaseActual idFaseActual) {
         this.idFaseActual = idFaseActual;
     }
 
@@ -154,7 +162,24 @@ public class Proyecto implements Serializable {
 
     @Override
     public String toString() {
-        return "uy.edu.ort.sigamas.seguridad.entidades.Proyecto[ idProyecto=" + idProyecto + " ]";
+        return "uy.edu.ort.sigamas.seguimiento.entidades.Proyecto[ idProyecto=" + idProyecto + " ]";
+    }
+
+    @XmlTransient
+    public List<TareaReal> getTareaRealList() {
+        return tareaRealList;
+    }
+
+    public void setTareaRealList(List<TareaReal> tareaRealList) {
+        this.tareaRealList = tareaRealList;
+    }
+
+    public Date getFechaFinPrevista() {
+        return fechaFinPrevista;
+    }
+
+    public void setFechaFinPrevista(Date fechaFinPrevista) {
+        this.fechaFinPrevista = fechaFinPrevista;
     }
     
 }

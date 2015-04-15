@@ -5,8 +5,7 @@
                 template="./../Templates/topHeaderTemplate.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 
     <ui:define name="content">
@@ -17,36 +16,30 @@
             </p:breadCrumb>
             <p:growl id="growl" sticky="true" showDetail="true"/>
 
-            <p:tabView style="margin: 0 auto; width: 60%;">
-                <p:tab id="parcela" title="Creación de un proyecto">
-                    <p:messages />
-                    <h:panelGrid columns="2" columnClasses="column" cellpadding="5">
-                        <h:outputLabel for="nombreCultivo" value="Nombre del cultivo *:" />
-                        <p:inputText id="nombreCultivo" value="#{beanCultivo.nombre}" required="true" label="text"/>
+            <p:panel header="Creación de un proyecto"  style="margin: 0 auto; width: 60%;">
+                <p:messages />
+                <h:panelGrid columns="2" columnClasses="column" cellpadding="5">
+                    <h:outputLabel for="nombreCultivo" value="Nombre del cultivo *:" />
+                    <p:inputText id="nombreCultivo" value="#{beanProyecto.nombre}" required="true" label="text"/>
 
-                        <h:outputLabel for="parcelaCultivo" value="Parcela* :" />                            
-                        <p:selectOneMenu id="parcelaCultivo" style="width:150px" value="#{beanProyecto.parcela}">
-                            
-                            <f:selectItem itemLabel="Seleccionar parcela" itemValue="" noSelectionOption="true" />
+                    <h:outputLabel for="parcelaCultivo" value="Parcela* :" />                            
+                    <p:selectOneMenu id="parcelaCultivo" style="width:150px" value="#{beanProyecto.parcela}">                            
+                        <f:selectItem itemLabel="Seleccionar parcela" itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{beanParcela.parcelasSelect}" />
+                    </p:selectOneMenu>
 
-                            <f:selectItems value="#{beanParcela.parcelasSelect}" />
-                        </p:selectOneMenu>
-                        <h:outputLabel for="siembraDatePicker" value="Fecha de siembra: *"/>
+                    <h:outputLabel for="siembraDatePicker" value="Fecha de siembra: *"/>
+                    <p:calendar id="siembraDatePicker" value="#{beanProyecto.fechaInicio}" />    
 
-                        <p:calendar id="siembraDatePicker" value="#{beanProyecto.fechaInicio}" />    
+                    <h:outputLabel for="cultivoProyecto" value="Cultivar: " />                            
+                    <p:selectOneMenu id="cultivoProyecto" value="#{beanProyecto.cultivo}" style="width:150px">
+                        <f:selectItem itemLabel="Seleccionar cultivo" itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{beanProyecto.cultivos}" />                                                        
+                    </p:selectOneMenu>
+                    <p:commandButton value="Guardar" actionListener="#{beanProyecto.crearProyecto}" update="@form"/>
 
-                        <h:outputLabel for="cultivoProyecto" value="Cultivar: " />                            
-                        <p:selectOneMenu id="cultivoProyecto" value="#{beanProyecto.cultivo}" style="width:150px">
-
-                            <f:selectItem itemLabel="Seleccionar cultivo" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{beanProyecto.cultivos}" />                                                        
-                        </p:selectOneMenu>
-                        <p:commandButton value="Guardar" action="#{beanProyecto.crearProyecto}" update="@form"/>
-
-                    </h:panelGrid>                                                         
-                </p:tab>   
-
-            </p:tabView>
+                </h:panelGrid>                                                         
+            </p:panel>
         </h:form>
     </ui:define>
 

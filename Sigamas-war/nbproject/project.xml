@@ -23,7 +23,19 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${reference.SeguridadEntidades-lib.jar}</file>
+                    <file>${reference.SigamasEntidades-lib.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="100">
+                    <file>${reference.Seguimiento-ejb.dist}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="100">
+                    <file>${reference.Mailing-ejb.dist}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="100">
+                    <file>${reference.EJBRefactoring.dist}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
@@ -40,6 +52,30 @@
         </libraries>
         <references xmlns="http://www.netbeans.org/ns/ant-project-references/1">
             <reference>
+                <foreign-project>EJBRefactoring</foreign-project>
+                <artifact-type>jar</artifact-type>
+                <script>build.xml</script>
+                <target>dist</target>
+                <clean-target>clean</clean-target>
+                <id>dist</id>
+            </reference>
+            <reference>
+                <foreign-project>Mailing-ejb</foreign-project>
+                <artifact-type>jar</artifact-type>
+                <script>build.xml</script>
+                <target>dist</target>
+                <clean-target>clean</clean-target>
+                <id>dist</id>
+            </reference>
+            <reference>
+                <foreign-project>Seguimiento-ejb</foreign-project>
+                <artifact-type>jar</artifact-type>
+                <script>build.xml</script>
+                <target>dist</target>
+                <clean-target>clean</clean-target>
+                <id>dist</id>
+            </reference>
+            <reference>
                 <foreign-project>Seguridad-ejb</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
@@ -48,7 +84,7 @@
                 <id>dist</id>
             </reference>
             <reference>
-                <foreign-project>SeguridadEntidades-lib</foreign-project>
+                <foreign-project>SigamasEntidades-lib</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
                 <target>jar</target>

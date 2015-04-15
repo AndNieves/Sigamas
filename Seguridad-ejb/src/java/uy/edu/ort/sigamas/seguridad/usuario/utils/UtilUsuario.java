@@ -21,11 +21,7 @@ public class UtilUsuario {
     public static Usuario crearUsuario(EntityManager em, Usuario nuevoUsuario, Rol rol) throws UsuarioExistenteException {
         verificarNombreUsuario(em, nuevoUsuario.getNombreUsuario());        
         
-        if (rol != null ) {
-            Rol managedRol = em.merge(rol);
-            nuevoUsuario.setIdRol(managedRol);
-        }
-        
+            
         em.persist(nuevoUsuario);
         return nuevoUsuario;
     }

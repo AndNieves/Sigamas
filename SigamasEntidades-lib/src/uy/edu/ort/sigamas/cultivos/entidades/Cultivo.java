@@ -5,7 +5,6 @@
  */
 package uy.edu.ort.sigamas.cultivos.entidades;
 
-import uy.edu.ort.sigamas.seguimiento.entidades.Proyecto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -22,13 +21,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import uy.edu.ort.sigamas.seguimiento.entidades.Proyecto;
 
 /**
  *
  * @author Mattahari
  */
 @Entity
-@Table(name = "cultivo", catalog = "sigamas_sigamas", schema = "")
+@Table(name = "cultivo")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cultivo.findAll", query = "SELECT c FROM Cultivo c"),
@@ -37,23 +37,23 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cultivo.findByTipo", query = "SELECT c FROM Cultivo c WHERE c.tipo = :tipo"),
     @NamedQuery(name = "Cultivo.findByCoeficiente", query = "SELECT c FROM Cultivo c WHERE c.coeficiente = :coeficiente")})
 public class Cultivo implements Serializable {
+    @OneToMany(mappedBy = "idCultivo", fetch = FetchType.EAGER)
+    private List<Proyecto> proyectoList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_cultivo", nullable = false)
+    @Column(name = "id_cultivo")
     private Integer idCultivo;
-    @Column(name = "nombre", length = 45)
+    @Column(name = "nombre")
     private String nombre;
     @Column(name = "tipo")
     private Integer tipo;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "coeficiente", precision = 6, scale = 4)
+    @Column(name = "coeficiente")
     private BigDecimal coeficiente;
     @OneToMany(mappedBy = "idCultivo", fetch = FetchType.EAGER)
     private List<Subfase> subfaseList;
-    @OneToMany(mappedBy = "idCultivo", fetch = FetchType.EAGER)
-    private List<Proyecto> proyectoList;
 
     public Cultivo() {
     }
@@ -103,15 +103,6 @@ public class Cultivo implements Serializable {
         this.subfaseList = subfaseList;
     }
 
-    @XmlTransient
-    public List<Proyecto> getProyectoList() {
-        return proyectoList;
-    }
-
-    public void setProyectoList(List<Proyecto> proyectoList) {
-        this.proyectoList = proyectoList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -134,7 +125,16 @@ public class Cultivo implements Serializable {
 
     @Override
     public String toString() {
-        return "uy.edu.ort.sigamas.seguridad.entidades.Cultivo[ idCultivo=" + idCultivo + " ]";
+        return "uy.edu.ort.sigamas.cultivos.entidades.Cultivo[ idCultivo=" + idCultivo + " ]";
+    }
+
+    @XmlTransient
+    public List<Proyecto> getProyectoList() {
+        return proyectoList;
+    }
+
+    public void setProyectoList(List<Proyecto> proyectoList) {
+        this.proyectoList = proyectoList;
     }
     
 }

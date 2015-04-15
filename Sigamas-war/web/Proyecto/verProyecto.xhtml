@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../Templates/topHeaderTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:growl sticky="true"/>
+            <h1>Detalles del proyecto</h1>
+            <p:panelGrid columns="6">
+                <p:outputLabel value="Nombre del proyecto"/>
+                <p:outputLabel value="#{beanSesionUsuario.proyectoSeleccionado.nombre}"/>
+                <p:outputLabel value="Fecha de inicio"/>
+                <p:calendar value="#{beanSesionUsuario.proyectoSeleccionado.fechaInicio}"/>
+                <p:outputLabel value="Fecha de fin"/>
+                <p:outputLabel value="Fecha estimada de Fin"/>
+            </p:panelGrid>
+            <p:separator/>
+            <p:outputPanel deferred="true" deferredMode="visible" style="width: 50%; float: left;">
+                <p:dataTable
+                    value="#{beanSesionUsuario.proyectoSeleccionado.tareaRealList}"
+                    var="tarea">
+                    <p:column headerText="Nombre">
+                        <p:outputLabel value="#{tarea.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Fecha">
+                        <p:calendar value="#{tarea.fecha}"/>
+                    </p:column>
+                    <p:column headerText="Estado">
+                        <p:outputLabel value="Terminada" rendered="#{tarea.validada eq 1}"/>
+                        <p:commandButton value="Validar" rendered="#{tarea.validada eq 0}" action="#{beanVistaProyecto.guardarTareaReal()}" update=":form">
+                            <f:setPropertyActionListener value="#{tarea}" target="#{beanVistaProyecto.tareaSeleccionada}"/>
+                        </p:commandButton>                        
+                    </p:column>
+                </p:dataTable>
+            </p:outputPanel>
+            <p:outputPanel deferred="true" deferredMode="visible" style="width: 50%; float: left;">
+                <p:panel header="Estado Biologico">
+                    Estado biologico actual                    
+                </p:panel>
+                <p:panel header="Clima">
+                    <a href="http://www.accuweather.com/es/uy/montevideo/349269/weather-forecast/349269" class="aw-widget-legal">
+                        <!--
+                        By accessing and/or using this code snippet, you agree to AccuWeather’s terms and conditions (in English) which can be found at http://www.accuweather.com/en/free-weather-widgets/terms and AccuWeather’s Privacy Statement (in English) which can be found at http://www.accuweather.com/en/privacy.
+                        -->
+                    </a><div id="awcc1418751484873" class="aw-widget-current"  data-locationkey="349269" data-unit="c" data-language="es" data-useip="false" data-uid="awcc1418751484873"></div><script type="text/javascript" src="http://oap.accuweather.com/launch.js"></script>   
+                </p:panel>
+                <p:panel header="Notificaciones">
+                    Notificaciones varias                    
+                </p:panel>
+            </p:outputPanel>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

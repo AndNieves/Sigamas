@@ -16,8 +16,10 @@ import uy.edu.ort.sigamas.mailing.exceptions.MailErrorException;
 @Local
 public interface MailingBeanLocal {
 
-    void enviarMail(String destino, String asunto, String texto) throws MailErrorException;
+    void enviarMail(String emisor, String pass, String destino, String asunto, String texto) throws MailErrorException;
 
-    void enviarMailConAdjunto(String destino, String asunto, String texto, ByteArrayInputStream adjunto) throws MailErrorException;
-    
+    void enviarMailConAdjunto(String emisor, String pass, String destino, String asunto, String texto, ByteArrayInputStream adjunto) throws MailErrorException;
+
+    void enviarMailHTML(String emisor, String pass, String destino, String asunto, String texto) throws MailErrorException;
+
 }

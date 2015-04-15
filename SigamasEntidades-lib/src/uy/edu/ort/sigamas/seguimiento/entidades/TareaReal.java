@@ -5,11 +5,8 @@
  */
 package uy.edu.ort.sigamas.seguimiento.entidades;
 
-import uy.edu.ort.sigamas.notificaciones.entidades.Notificacion;
-import uy.edu.ort.sigamas.insumos.entidades.InsumoTarea;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,48 +18,33 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import uy.edu.ort.sigamas.cultivos.entidades.Cultivo;
 
 /**
  *
  * @author Mattahari
  */
 @Entity
-@Table(name = "tarea_real", catalog = "sigamas_sigamas", schema = "")
+@Table(name = "tarea_real")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TareaReal.findAll", query = "SELECT t FROM TareaReal t"),
     @NamedQuery(name = "TareaReal.findByIdTareaReal", query = "SELECT t FROM TareaReal t WHERE t.idTareaReal = :idTareaReal"),
     @NamedQuery(name = "TareaReal.findByNombre", query = "SELECT t FROM TareaReal t WHERE t.nombre = :nombre"),
-    @NamedQuery(name = "TareaReal.findByFecha", query = "SELECT t FROM TareaReal t WHERE t.fecha = :fecha"),    
-    @NamedQuery(name = "TareaReal.findTareasPendientes", query = "select distinct t from TareaReal t "
-            + "join t.idProyecto p "            
-            + "where p.idProyecto = :idProyecto "
-            + "and t.validada = 0 "
-            + "and t.fecha <= CURRENT_DATE "
-            + "order by t.idCultivo"
-    ),
+    @NamedQuery(name = "TareaReal.findByFecha", query = "SELECT t FROM TareaReal t WHERE t.fecha = :fecha"),
+    @NamedQuery(name = "TareaReal.findByValidada", query = "SELECT t FROM TareaReal t WHERE t.validada = :validada"),
     @NamedQuery(name = "TareaReal.findByIdFase", query = "SELECT t FROM TareaReal t WHERE t.idFase = :idFase")})
 public class TareaReal implements Serializable {
-    @Column(name = "fecha_planificada")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaPlanificada;
-    @JoinColumn(name = "id_cultivo", referencedColumnName = "id_cultivo")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Cultivo idCultivo;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_tarea_real", nullable = false)
+    @Column(name = "id_tarea_real")
     private Integer idTareaReal;
-    @Column(name = "nombre", length = 45)
+    @Column(name = "nombre")
     private String nombre;
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
@@ -71,10 +53,6 @@ public class TareaReal implements Serializable {
     private Integer validada;
     @Column(name = "id_fase")
     private Integer idFase;
-    @OneToMany(mappedBy = "idTareaReal", fetch = FetchType.EAGER)
-    private List<InsumoTarea> insumoTareaList;
-    @OneToMany(mappedBy = "idTarea", fetch = FetchType.EAGER)
-    private List<Notificacion> notificacionList;
     @JoinColumn(name = "id_tarea_planificada", referencedColumnName = "id_tarea_planificada")
     @ManyToOne(fetch = FetchType.EAGER)
     private TareaPlanificada idTareaPlanificada;
@@ -129,24 +107,6 @@ public class TareaReal implements Serializable {
         this.idFase = idFase;
     }
 
-    @XmlTransient
-    public List<InsumoTarea> getInsumoTareaList() {
-        return insumoTareaList;
-    }
-
-    public void setInsumoTareaList(List<InsumoTarea> insumoTareaList) {
-        this.insumoTareaList = insumoTareaList;
-    }
-
-    @XmlTransient
-    public List<Notificacion> getNotificacionList() {
-        return notificacionList;
-    }
-
-    public void setNotificacionList(List<Notificacion> notificacionList) {
-        this.notificacionList = notificacionList;
-    }
-
     public TareaPlanificada getIdTareaPlanificada() {
         return idTareaPlanificada;
     }
@@ -185,23 +145,7 @@ public class TareaReal implements Serializable {
 
     @Override
     public String toString() {
-        return "uy.edu.ort.sigamas.seguridad.entidades.TareaReal[ idTareaReal=" + idTareaReal + " ]";
-    }
-
-    public Cultivo getIdCultivo() {
-        return idCultivo;
-    }
-
-    public void setIdCultivo(Cultivo idCultivo) {
-        this.idCultivo = idCultivo;
-    }
-
-    public Date getFechaPlanificada() {
-        return fechaPlanificada;
-    }
-
-    public void setFechaPlanificada(Date fechaPlanificada) {
-        this.fechaPlanificada = fechaPlanificada;
+        return "uy.edu.ort.sigamas.seguimiento.entidades.TareaReal[ idTareaReal=" + idTareaReal + " ]";
     }
     
 }

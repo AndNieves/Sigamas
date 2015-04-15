@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 import uy.edu.ort.sigamas.seguridad.entidades.Cuenta;
 import uy.edu.ort.sigamas.seguridad.login.LoginBeanLocal;
@@ -26,7 +26,7 @@ import uy.edu.ort.sigamas.sigamasweb.utils.UtilsMensajes;
  * @author Mattahari
  */
 @ManagedBean(name = "beanLogin")
-@ViewScoped
+@RequestScoped
 public class BeanLogin implements Serializable {
 
     @EJB

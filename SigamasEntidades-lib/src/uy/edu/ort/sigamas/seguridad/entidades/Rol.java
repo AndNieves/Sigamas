@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Mattahari
  */
 @Entity
-@Table(name = "rol", catalog = "sigamas_sigamas", schema = "")
+@Table(name = "rol")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Rol.findAll", query = "SELECT r FROM Rol r"),
@@ -37,13 +37,15 @@ public class Rol implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_rol", nullable = false)
+    @Column(name = "id_rol")
     private Integer idRol;
     @Basic(optional = false)
-    @Column(name = "nombre", nullable = false, length = 45)
+    @Column(name = "nombre")
     private String nombre;
     @OneToMany(mappedBy = "idRol", fetch = FetchType.EAGER)
-    private List<Usuario> usuarioList;
+    private List<RelRolPermiso> relRolPermisoList;
+    @OneToMany(mappedBy = "idRol", fetch = FetchType.EAGER)
+    private List<RelUsuarioCuentaRol> relUsuarioCuentaRolList;
 
     public Rol() {
     }
@@ -74,12 +76,21 @@ public class Rol implements Serializable {
     }
 
     @XmlTransient
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
+    public List<RelRolPermiso> getRelRolPermisoList() {
+        return relRolPermisoList;
     }
 
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
+    public void setRelRolPermisoList(List<RelRolPermiso> relRolPermisoList) {
+        this.relRolPermisoList = relRolPermisoList;
+    }
+
+    @XmlTransient
+    public List<RelUsuarioCuentaRol> getRelUsuarioCuentaRolList() {
+        return relUsuarioCuentaRolList;
+    }
+
+    public void setRelUsuarioCuentaRolList(List<RelUsuarioCuentaRol> relUsuarioCuentaRolList) {
+        this.relUsuarioCuentaRolList = relUsuarioCuentaRolList;
     }
 
     @Override
